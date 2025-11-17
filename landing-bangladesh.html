@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pestañas Idioma Mobile</title>
+
+<style>
+
+  html {
+    display: block;
+    opacity: 1;
+    transform: translateX(0);
+    background: #262655;
+  }
+
+
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f9f9f9;
+  }
+
+  p, h2 {
+  color:white;
+  }
+
+
+  /* --- TABS --- */
+  .tabs {
+    display: flex;
+    background: white;
+    border-bottom: 1px solid #ddd;
+  }
+
+.tab {
+    flex: 1;
+    padding: 14px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+    background: #7f7f7f;
+    transition: background 0.3s;
+}
+
+  .tab.active {
+background: #b45099;
+    border-bottom: 3px solid #007bff;
+    color: white;
+  }
+
+  /* --- CONTENT --- */
+  .content {
+    padding: 20px;
+    opacity: 0;
+    transform: translateX(15px);
+    transition: all 0.35s ease;
+    display: none;
+  }
+
+  .content.active {
+    display: block;
+    opacity: 1;
+    transform: translateX(0);
+    background: #262655;
+  }
+
+  /* --- BOX --- */
+  .box {
+    max-width: 360px;
+    margin: auto;
+    text-align: center;
+  }
+
+  img {
+    width: 100%;
+  }
+
+  input {
+    width: 90%;
+    padding: 12px;
+    margin: 12px 0;
+    border-radius: 6px;
+    border: 1px solid #aaa;
+    font-size: 16px;
+  }
+
+  button {
+    width: 100%;
+    padding: 14px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 17px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #005fcc;
+  }
+
+  .error {
+    color: red;
+    font-size: 14px;
+    margin-top: 4px;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" data-tab="bd">বাংলা</div>
+  <div class="tab" data-tab="en">English</div>
+</div>
+
+<!-- CONTENT BENGALI -->
+<div class="content active" id="bd">
+  <div class="box">
+    <img src="img-landing.jpg" alt="Image BD">
+    <h2>স্বাগতম!</h2>
+    <p>চালিয়ে যেতে আপনার ফোন নম্বর লিখুন।</p>
+
+    <input id="phoneBD" type="tel" placeholder="ফোন নম্বর">
+    <p id="errorBD" class="error"></p>
+
+      <p>আমি নিশ্চিত করছি যে আমি পরিষেবার শর্তাবলী পড়েছি এবং সম্মত।
+
+FlexFlix দৈনিক
+৳৮.০০ / দিন (স্বয়ংক্রিয় পুনর্নবীকরণ উপলব্ধ)
+১৫% ভ্যাট</p>
+
+    <button onclick="validateBD()">চালিয়ে যান</button>
+  </div>
+</div>
+
+<!-- CONTENT ENGLISH -->
+<div class="content" id="en">
+  <div class="box">
+    <img src="img-landing.jpg" alt="Image EN">
+    <h2>Welcome!</h2>
+    <p>Please enter your phone number to continue.</p>
+
+    <input id="phoneEN" type="tel" placeholder="Phone number">
+    <p id="errorEN" class="error"></p>
+
+    <p>I confirm that I have read and agree to the Terms and Conditions of the service.
+      FlexFlix Daily
+      ৳8.00 / day (auto-renewal available)
+      15% VAT</p>
+
+    <button onclick="validateEN()">Continue</button>
+  </div>
+</div>
+
+
+<script>
+  /* --- TAB SWITCHING WITH TRANSITION --- */
+  const tabs = document.querySelectorAll(".tab");
+  const contents = document.querySelectorAll(".content");
+
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      const target = tab.dataset.tab;
+
+      tabs.forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
+
+      contents.forEach(c => c.classList.remove("active"));
+      document.getElementById(target).classList.add("active");
+    });
+  });
+
+  /* --- VALIDACIÓN INGLÉS (básico: no vacío) --- */
+  function validateEN() {
+    const phone = document.getElementById("phoneEN").value.trim();
+    const error = document.getElementById("errorEN");
+
+    if (phone.length < 6) {
+      error.textContent = "Please enter a valid phone number.";
+      return;
+    }
+
+    error.textContent = "";
+    alert("Valid number! (EN)");
+  }
+
+  /* --- VALIDACIÓN BANGLADESH --- */
+  function validateBD() {
+    const phone = document.getElementById("phoneBD").value.trim();
+    const error = document.getElementById("errorBD");
+
+    /* Reglas BD:
+       - 11 dígitos
+       - empieza con 013–019
+       - regex: ^01[3-9]\d{8}$
+    */
+    const bdRegex = /^01[3-9]\d{8}$/;
+
+    if (!bdRegex.test(phone)) {
+      error.textContent = "অবৈধ মোবাইল নম্বর (Valid format: 01XXXXXXXXX)";
+      return;
+    }
+
+    error.textContent = "";
+    alert("Valid number! (BD)");
+  }
+</script>
+
+</body>
+</html>
